@@ -13,6 +13,7 @@ class Login extends React.Component {
     };
   }
 
+  // função que valida os campos de email e senha
   buttonDisabled = () => {
     const { email, password } = this.state;
     const regex = /\S+@\S+\.\S+/;
@@ -33,6 +34,7 @@ class Login extends React.Component {
     }
   };
 
+  // Função que controla os inputs
   onInputChange = (event) => {
     const { name, type, checked } = event.target;
     const value = type === 'checkbox' ? checked : event.target.value;
@@ -41,6 +43,7 @@ class Login extends React.Component {
     }, () => this.buttonDisabled());
   };
 
+  // função que passa o estado local para global e faz o redirect pra pagina carteira
   handleSubmit = () => {
     const { dispatch, history } = this.props;
     const { email } = this.state;
