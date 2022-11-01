@@ -1,7 +1,7 @@
 import { LOGIN_ACTION } from '../actions';
 
 const INITIAL_STATE = {
-  email: '', // string que armazena o email da pessoa usuária
+  email: '', // string que armazena o email da pessoa usuárias
 };
 
 const user = (state = INITIAL_STATE, action) => {
