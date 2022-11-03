@@ -32,7 +32,7 @@ class WalletForm extends Component {
     });
   };
 
-  // função que faz a formatação dos state e adiciona a chave exchangeRates
+  // função que faz a formatação dos state e adiciona a chave exchangeRates com API
   formateExpense = async () => {
     const { id, description, tag, method, currency, value } = this.state;
     const formatedExpense = {
