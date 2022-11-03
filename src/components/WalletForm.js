@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchCurrencies, submitForm } from '../redux/actions';
+import fetchCurrenciesApi from '../services/api';
 
 class WalletForm extends Component {
   constructor() {
@@ -41,16 +42,10 @@ class WalletForm extends Component {
       currency,
       method,
       tag,
-      exchangeRates: await this.getExchangeRates(),
+      exchangeRates: await fetchCurrenciesApi(),
+
     };
     return formatedExpense;
-  };
-
-  // fetch da api completa sem filtro
-  getExchangeRates = async () => {
-    const response = await fetch('https://economia.awesomeapi.com.br/json/all');
-    const exchangeRate = await response.json();
-    return exchangeRate;
   };
 
   // função que passa o estado faz o dispatch do state local para o global

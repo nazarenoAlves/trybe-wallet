@@ -17,7 +17,7 @@ export function submitForm(payload) {
     payload,
   };
 }
-
+// função quer faz o dispatch e fetch com filtro
 export function fetchCurrencies() {
   return async (dispatch) => {
     const currencies = await fetchCurrenciesApi();
