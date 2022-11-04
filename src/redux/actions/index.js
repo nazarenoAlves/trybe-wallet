@@ -3,6 +3,7 @@ import fetchCurrenciesApi from '../../services/api';
 export const LOGIN_ACTION = 'LOGIN_ACTION';
 export const CURRENCIES_ACTION = 'CURRENCIES_ACTION';
 export const FORM_SUBMIT = 'FORM_SUBMIT';
+export const REMOVE_ITEM_EXPENSE = 'REMOVE_EXPENSE';
 export function loginAction(email) {
   return { type: LOGIN_ACTION, email };
 }
@@ -17,6 +18,13 @@ export function submitForm(payload) {
     payload,
   };
 }
+export function removeExpenseAction(id) {
+  return {
+    type: REMOVE_ITEM_EXPENSE,
+    id,
+  };
+}
+
 // função quer faz o dispatch e fetch com filtro
 export function fetchCurrencies() {
   return async (dispatch) => {
