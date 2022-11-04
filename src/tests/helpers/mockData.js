@@ -1,4 +1,7 @@
 const mockData = {
+  user: {
+    email: 'nazareno@gmail.com',
+  },
   USD: {
     code: 'USD',
     codein: 'BRL',

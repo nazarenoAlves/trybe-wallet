@@ -73,7 +73,7 @@ class WalletForm extends Component {
         <input
           type="number"
           data-testid="value-input"
-          placeholder="Valodar da Despesa"
+          placeholder="Valor da Despesa"
           name="value"
           value={ value }
           onChange={ this.onInputChange }
