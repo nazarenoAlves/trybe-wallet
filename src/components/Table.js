@@ -1,13 +1,19 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { removeExpenseAction } from '../redux/actions';
+import { editExpense, removeExpenseAction } from '../redux/actions';
 
 class Table extends Component {
   removeItem = ({ target }) => {
     const { dispatch } = this.props;
     const { name } = target;
     dispatch(removeExpenseAction(+name));
+  };
+
+  editButton = ({ target }) => {
+    const { name } = target;
+    const { dispatch } = this.props;
+    dispatch(editExpense(+name));
   };
 
   render() {
@@ -42,16 +48,16 @@ class Table extends Component {
                     * Number(element.exchangeRates[element.currency].ask)).toFixed(2)}
                 </td>
                 <td>Real</td>
-                {/* <td>
+                <td>
                   <button
                     name={ element.id }
-                    // onClick={}
+                    onClick={ this.editButton }
                     data-testid="edit-btn"
                     type="button"
                   >
                     EDITAR
                   </button>
-                </td> */}
+                </td>
                 <td>
                   <button
                     onClick={ this.removeItem }

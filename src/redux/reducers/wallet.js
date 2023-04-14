@@ -1,4 +1,5 @@
-import { CURRENCIES_ACTION, FORM_SUBMIT, REMOVE_ITEM_EXPENSE } from '../actions';
+import { CURRENCIES_ACTION, EDIT_EXPENSE, EDIT_SUBMIT,
+  FORM_SUBMIT, REMOVE_ITEM_EXPENSE } from '../actions';
 
 const INITIAL_STATE = {
   currencies: [], // array de string
@@ -23,6 +24,18 @@ const wallet = (state = INITIAL_STATE, action) => {
     return {
       ...state,
       expenses: state.expenses.filter((element) => element.id !== action.id),
+    };
+  case EDIT_EXPENSE:
+    return {
+      ...state,
+      editor: true,
+      idToEdit: action.id,
+    };
+  case EDIT_SUBMIT:
+    return {
+      ...state,
+      expenses: action.expenses,
+      editor: false,
     };
   default:
     return state;

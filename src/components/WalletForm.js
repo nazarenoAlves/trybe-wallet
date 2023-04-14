@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchCurrencies, submitForm } from '../redux/actions';
+import { fetchCurrencies, formEditExpense, submitForm } from '../redux/actions';
 import fetchCurrenciesApi from '../services/api';
 
 class WalletForm extends Component {
@@ -14,6 +14,7 @@ class WalletForm extends Component {
       currency: 'USD',
       method: 'Dinheiro',
       tag: 'alimentação',
+      att: 0,
     };
   }
 
@@ -49,8 +50,7 @@ class WalletForm extends Component {
   };
 
   // função que passa o estado faz o dispatch do state local para o global
-  submitForm = async (event) => {
-    event.preventDefault();
+  submitForm = async () => {
     const { dispatch } = this.props;
     const result = await this.formateExpense();
     dispatch(submitForm(result));
@@ -64,8 +64,22 @@ class WalletForm extends Component {
     }));
   };
 
+  editFormButton = () => {
+    const { value, description, currency, method, tag } = this.state;
+    const { expenses, idToEdit, dispatch } = this.props;
+    expenses.find((element) => element.id === idToEdit).value = value;
+    expenses.find((element) => element.id === idToEdit).description = description;
+    expenses.find((element) => element.id === idToEdit).currency = currency;
+    expenses.find((element) => element.id === idToEdit).method = method;
+    expenses.find((element) => element.id === idToEdit).tag = tag;
+    dispatch(formEditExpense(expenses));
+    this.setState((prev) => ({
+      att: prev.att + 1,
+    }));
+  };
+
   render() {
-    const { currencies } = this.props;
+    const { currencies, editor } = this.props;
     const { value, description, currency, method, tag } = this.state;
     return (
       <div>
@@ -124,12 +138,21 @@ class WalletForm extends Component {
           <option>Transporte</option>
           <option>Saúde</option>
         </select>
-        <button
-          type="button"
-          onClick={ this.submitForm }
-        >
-          Adicionar despesa
-        </button>
+        { editor ? (
+          <button
+            type="button"
+            name="edita-despesa"
+            onClick={ this.editFormButton }
+          >
+            Editar Despesa
+          </button>)
+          : (
+            <button
+              type="button"
+              onClick={ this.submitForm }
+            >
+              Adicionar despesa
+            </button>)}
       </div>
     );
   }
@@ -140,10 +163,17 @@ WalletForm.propTypes = {
     map: PropTypes.func.isRequired,
   }).isRequired,
   dispatch: PropTypes.func.isRequired,
+  editor: PropTypes.bool.isRequired,
+  expenses: PropTypes.shape({
+    find: PropTypes.func.isRequired,
+  }).isRequired,
+  idToEdit: PropTypes.number.isRequired,
 };
 const mapStateToProps = (globalState) => ({
   currencies: globalState.wallet.currencies,
   expenses: globalState.wallet.expenses,
+  idToEdit: globalState.wallet.idToEdit,
+  editor: globalState.wallet.editor,
 });
 
 export default connect(mapStateToProps)(WalletForm);

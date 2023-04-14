@@ -4,6 +4,8 @@ export const LOGIN_ACTION = 'LOGIN_ACTION';
 export const CURRENCIES_ACTION = 'CURRENCIES_ACTION';
 export const FORM_SUBMIT = 'FORM_SUBMIT';
 export const REMOVE_ITEM_EXPENSE = 'REMOVE_EXPENSE';
+export const EDIT_EXPENSE = 'EDIT_EXPENSE';
+export const EDIT_SUBMIT = 'EDIT_SUBMIT';
 export function loginAction(email) {
   return { type: LOGIN_ACTION, email };
 }
@@ -22,6 +24,20 @@ export function removeExpenseAction(id) {
   return {
     type: REMOVE_ITEM_EXPENSE,
     id,
+  };
+}
+
+export function editExpense(id) {
+  return {
+    type: EDIT_EXPENSE,
+    id,
+  };
+}
+
+export function formEditExpense(expenses) {
+  return {
+    type: EDIT_SUBMIT,
+    expenses,
   };
 }
 
