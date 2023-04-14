@@ -67,12 +67,17 @@ class WalletForm extends Component {
   editFormButton = () => {
     const { value, description, currency, method, tag } = this.state;
     const { expenses, idToEdit, dispatch } = this.props;
-    expenses.find((element) => element.id === idToEdit).value = value;
-    expenses.find((element) => element.id === idToEdit).description = description;
-    expenses.find((element) => element.id === idToEdit).currency = currency;
-    expenses.find((element) => element.id === idToEdit).method = method;
-    expenses.find((element) => element.id === idToEdit).tag = tag;
-    dispatch(formEditExpense(expenses));
+    const editedExpense = {
+      ...expenses.find((element) => element.id === idToEdit),
+      value,
+      description,
+      currency,
+      method,
+      tag,
+    };
+    const newExpenses = expenses
+      .map((element) => (element.id === idToEdit ? editedExpense : element));
+    dispatch(formEditExpense(newExpenses));
     this.setState((prev) => ({
       att: prev.att + 1,
     }));
@@ -89,8 +94,8 @@ class WalletForm extends Component {
           data-testid="value-input"
           placeholder="Valor da Despesa"
           name="value"
-          value={ value }
-          onChange={ this.onInputChange }
+          value={value}
+          onChange={this.onInputChange}
         />
         <h3>Descrição da Despesa</h3>
         <input
@@ -98,19 +103,19 @@ class WalletForm extends Component {
           data-testid="description-input"
           name="description"
           placeholder="Descrição"
-          value={ description }
-          onChange={ this.onInputChange }
+          value={description}
+          onChange={this.onInputChange}
         />
         <select
           data-testid="currency-input"
-          value={ currency }
+          value={currency}
           name="currency"
-          onChange={ this.onInputChange }
+          onChange={this.onInputChange}
         >
           {currencies.map((element) => (
             <option
-              key={ element }
-              value={ element }
+              key={element}
+              value={element}
             >
               {element}
             </option>
@@ -119,8 +124,8 @@ class WalletForm extends Component {
         <select
           data-testid="method-input"
           name="method"
-          value={ method }
-          onChange={ this.onInputChange }
+          value={method}
+          onChange={this.onInputChange}
         >
           <option>Dinheiro</option>
           <option>Cartão de crédito</option>
@@ -129,8 +134,8 @@ class WalletForm extends Component {
         <select
           data-testid="tag-input"
           name="tag"
-          value={ tag }
-          onChange={ this.onInputChange }
+          value={tag}
+          onChange={this.onInputChange}
         >
           <option>Alimentação</option>
           <option>Lazer</option>
@@ -138,18 +143,18 @@ class WalletForm extends Component {
           <option>Transporte</option>
           <option>Saúde</option>
         </select>
-        { editor ? (
+        {editor ? (
           <button
             type="button"
             name="edita-despesa"
-            onClick={ this.editFormButton }
+            onClick={this.editFormButton}
           >
             Editar Despesa
           </button>)
           : (
             <button
               type="button"
-              onClick={ this.submitForm }
+              onClick={this.submitForm}
             >
               Adicionar despesa
             </button>)}
