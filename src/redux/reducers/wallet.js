@@ -1,5 +1,10 @@
-import { CURRENCIES_ACTION, EDIT_EXPENSE, EDIT_SUBMIT,
-  FORM_SUBMIT, REMOVE_ITEM_EXPENSE } from '../actions';
+import {
+  CURRENCIES_ACTION,
+  EDIT_EXPENSE,
+  EDIT_SUBMIT,
+  FORM_SUBMIT,
+  REMOVE_ITEM_EXPENSE,
+} from '../actions';
 
 const INITIAL_STATE = {
   currencies: [], // array de string
@@ -20,11 +25,14 @@ const wallet = (state = INITIAL_STATE, action) => {
       ...state,
       expenses: [...state.expenses, action.payload],
     };
-  case REMOVE_ITEM_EXPENSE:
+  case REMOVE_ITEM_EXPENSE: {
+    const updatedExpenses = state.expenses.filter((element) => element.id !== action.id);
+    localStorage.setItem('expenses', JSON.stringify(updatedExpenses));
     return {
       ...state,
-      expenses: state.expenses.filter((element) => element.id !== action.id),
+      expenses: updatedExpenses,
     };
+  }
   case EDIT_EXPENSE:
     return {
       ...state,

@@ -18,10 +18,18 @@ class WalletForm extends Component {
     };
   }
 
+  loadExpensesFromLocalStorage = () => {
+    return JSON.parse(localStorage.getItem("expenses")) || [];
+  }
+
   // função que faz os dispach da requisição da api
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch(fetchCurrencies());
+    const expensesFromLocalStorage = this.loadExpensesFromLocalStorage();
+    expensesFromLocalStorage.forEach((expense) => {
+      dispatch(submitForm(expense));
+    });
   }
 
   // função que faz os controles dos inputs
@@ -49,10 +57,19 @@ class WalletForm extends Component {
     return formatedExpense;
   };
 
+  saveExpenseToLocalStorage = (expense) => {
+    const expenses = JSON.parse(localStorage.getItem("expenses")) || [];
+    expenses.push(expense);
+    localStorage.setItem("expenses", JSON.stringify(expenses));
+  }
+
+
+
   // função que passa o estado faz o dispatch do state local para o global
   submitForm = async () => {
     const { dispatch } = this.props;
     const result = await this.formateExpense();
+    this.saveExpenseToLocalStorage(result)
     dispatch(submitForm(result));
     this.setState((prev) => ({
       id: prev.id + 1,
@@ -81,6 +98,7 @@ class WalletForm extends Component {
     this.setState((prev) => ({
       att: prev.att + 1,
     }));
+    localStorage.setItem('expenses', JSON.stringify(newExpenses));
   };
 
   render() {
