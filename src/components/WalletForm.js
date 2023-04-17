@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchCurrencies, formEditExpense, submitForm } from '../redux/actions';
 import fetchCurrenciesApi from '../services/api';
+import Header from './Header';
 
 class WalletForm extends Component {
   constructor() {
@@ -18,10 +19,6 @@ class WalletForm extends Component {
     };
   }
 
-  loadExpensesFromLocalStorage = () => {
-    return JSON.parse(localStorage.getItem("expenses")) || [];
-  }
-
   // função que faz os dispach da requisição da api
   componentDidMount() {
     const { dispatch } = this.props;
@@ -31,6 +28,8 @@ class WalletForm extends Component {
       dispatch(submitForm(expense));
     });
   }
+
+  loadExpensesFromLocalStorage = () => JSON.parse(localStorage.getItem('expenses')) || [];
 
   // função que faz os controles dos inputs
   onInputChange = (event) => {
@@ -58,18 +57,16 @@ class WalletForm extends Component {
   };
 
   saveExpenseToLocalStorage = (expense) => {
-    const expenses = JSON.parse(localStorage.getItem("expenses")) || [];
+    const expenses = JSON.parse(localStorage.getItem('expenses')) || [];
     expenses.push(expense);
-    localStorage.setItem("expenses", JSON.stringify(expenses));
-  }
-
-
+    localStorage.setItem('expenses', JSON.stringify(expenses));
+  };
 
   // função que passa o estado faz o dispatch do state local para o global
   submitForm = async () => {
     const { dispatch } = this.props;
     const result = await this.formateExpense();
-    this.saveExpenseToLocalStorage(result)
+    this.saveExpenseToLocalStorage(result);
     dispatch(submitForm(result));
     this.setState((prev) => ({
       id: prev.id + 1,
@@ -93,6 +90,7 @@ class WalletForm extends Component {
       tag,
     };
     const newExpenses = expenses
+      // eslint-disable-next-line react/prop-types
       .map((element) => (element.id === idToEdit ? editedExpense : element));
     dispatch(formEditExpense(newExpenses));
     this.setState((prev) => ({
@@ -105,77 +103,85 @@ class WalletForm extends Component {
     const { currencies, editor } = this.props;
     const { value, description, currency, method, tag } = this.state;
     return (
-      <div>
-        <h3>Valor da Despesa</h3>
-        <input
-          type="number"
-          data-testid="value-input"
-          placeholder="Valor da Despesa"
-          name="value"
-          value={value}
-          onChange={this.onInputChange}
-        />
-        <h3>Descrição da Despesa</h3>
-        <input
-          type="text"
-          data-testid="description-input"
-          name="description"
-          placeholder="Descrição"
-          value={description}
-          onChange={this.onInputChange}
-        />
-        <select
-          data-testid="currency-input"
-          value={currency}
-          name="currency"
-          onChange={this.onInputChange}
-        >
-          {currencies.map((element) => (
-            <option
-              key={element}
-              value={element}
-            >
-              {element}
-            </option>
-          ))}
-        </select>
-        <select
-          data-testid="method-input"
-          name="method"
-          value={method}
-          onChange={this.onInputChange}
-        >
-          <option>Dinheiro</option>
-          <option>Cartão de crédito</option>
-          <option>Cartão de débito</option>
-        </select>
-        <select
-          data-testid="tag-input"
-          name="tag"
-          value={tag}
-          onChange={this.onInputChange}
-        >
-          <option>Alimentação</option>
-          <option>Lazer</option>
-          <option>Trabalho</option>
-          <option>Transporte</option>
-          <option>Saúde</option>
-        </select>
-        {editor ? (
-          <button
-            type="button"
-            name="edita-despesa"
-            onClick={this.editFormButton}
+      <div className="contentForm">
+        <Header />
+        <div className="formWallet">
+          <h3>Valor da Despesa: </h3>
+          <input
+            type="number"
+            data-testid="value-input"
+            placeholder="Valor da Despesa"
+            name="value"
+            value={ value }
+            onChange={ this.onInputChange }
+          />
+          <h3>Descrição da Despesa: </h3>
+          <input
+            type="text"
+            data-testid="description-input"
+            name="description"
+            placeholder="Descrição"
+            value={ description }
+            onChange={ this.onInputChange }
+          />
+          <h3>Moeda: </h3>
+          <select
+            data-testid="currency-input"
+            value={ currency }
+            name="currency"
+            onChange={ this.onInputChange }
           >
-            Editar Despesa
-          </button>)
-          : (
+            {currencies.map((element) => (
+              <option
+                key={ element }
+                value={ element }
+              >
+                {element}
+              </option>
+            ))}
+          </select>
+          <h3>Método De Pagamento: </h3>
+          <select
+            data-testid="method-input"
+            name="method"
+            value={ method }
+            onChange={ this.onInputChange }
+          >
+            <option>Dinheiro</option>
+            <option>Cartão de crédito</option>
+            <option>Cartão de débito</option>
+          </select>
+          <h3>Categoria:</h3>
+          <select
+            data-testid="tag-input"
+            name="tag"
+            value={ tag }
+            onChange={ this.onInputChange }
+          >
+            <option>Alimentação</option>
+            <option>Lazer</option>
+            <option>Trabalho</option>
+            <option>Transporte</option>
+            <option>Saúde</option>
+          </select>
+          {editor ? (
             <button
               type="button"
-              onClick={this.submitForm}
+              name="edita-despesa"
+              onClick={ this.editFormButton }
+              className="btnEdit"
             >
-              Adicionar despesa
-            </button>)}
+              Editar Despesa
+            </button>)
+            : (
+              <button
+                type="button"
+                onClick={ this.submitForm }
+                className="btnAdd"
+              >
+                Adicionar despesa
+              </button>)}
+        </div>
       </div>
     );
   }

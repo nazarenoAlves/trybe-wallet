@@ -54,9 +54,9 @@ class Login extends React.Component {
   render() {
     const { isButtonDisable, email, password } = this.state;
     return (
-      <div>
+      <div className="contentLogin">
+        <h1>Trybe Wallet</h1>
         <label htmlFor="e-mail">
-          <h3>Email</h3>
           <input
             type="email"
             id="e-mail"
@@ -68,7 +68,6 @@ class Login extends React.Component {
           />
         </label>
         <label htmlFor="senha">
-          <h3>Senha</h3>
           <input
             type="password"
             id="senha"
@@ -83,6 +82,7 @@ class Login extends React.Component {
           type="button"
           disabled={ isButtonDisable }
           onClick={ this.handleSubmit }
+          className="btnLogin"
         >
           Entrar
         </button>

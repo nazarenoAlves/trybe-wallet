@@ -12,16 +12,13 @@ class Header extends Component {
       sum += +element.value * element.exchangeRates[currency].ask;
     });
     return (
-      <div>
-        <span data-testid="email-field">
-          {email}
-        </span>
-        <span data-testid="total-field">
-          {sum.toFixed(2)}
-        </span>
-        <span data-testid="header-currency-field">
-          BRL
-        </span>
+      <div className="header">
+        <h1>Trybe Wallet</h1>
+        <h3>{`Total de Despesas:${sum.toFixed(2)}BRL`}</h3>
+        <div data-testid="email-field">
+          <h3>{email}</h3>
+
+        </div>
       </div>
     );
   }

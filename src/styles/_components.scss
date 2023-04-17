@@ -1,0 +1,22 @@
+.btnLogin {
+    @include shadow();
+    background-color: $border-input;
+    width: 330px;
+    height: 40px;
+    color: $div-login;
+    border-radius: 5px;
+   }
+
+   .btnAdd {
+    display: block;
+    width: 330px;
+    height: 40px;
+    margin-top: 20px;
+    background-color: $btn-add;
+    border: none;
+    border-radius: 5px;
+    color: $div-login;
+    position: absolute;
+    left: 350px;
+    top: 300px;
+   }
