@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchCurrencies, formEditExpense, submitForm } from '../redux/actions';
 import fetchCurrenciesApi from '../services/api';
-import Header from './Header';
 
 class WalletForm extends Component {
   constructor() {
@@ -100,13 +99,17 @@ class WalletForm extends Component {
   };
 
   render() {
-    const { currencies, editor } = this.props;
+    const { currencies, editor, expenses } = this.props;
     const { value, description, currency, method, tag } = this.state;
+    let sum = 0;
+    expenses.forEach((element) => {
+      // const { currency } = element;
+      sum += +element.value * element.exchangeRates[currency].ask;
+    });
     return (
       <div className="contentForm">
-        <Header />
         <div className="formWallet">
-          <h3>Valor da Despesa: </h3>
+          <h3>Valor: </h3>
           <input
             type="number"
             data-testid="value-input"
@@ -115,7 +118,7 @@ class WalletForm extends Component {
             value={ value }
             onChange={ this.onInputChange }
           />
-          <h3>Descrição da Despesa: </h3>
+          <h3>Descrição: </h3>
           <input
             type="text"
             data-testid="description-input"
@@ -182,6 +185,10 @@ class WalletForm extends Component {
                 Adicionar despesa
               </button>)}
         </div>
+        <div className="totalExpense">
+          <h1>Total de Despesas</h1>
+          <h1>{sum.toFixed(2)}</h1>
+        </div>
       </div>
     );
   }
@@ -195,6 +202,7 @@ WalletForm.propTypes = {
   editor: PropTypes.bool.isRequired,
   expenses: PropTypes.shape({
     find: PropTypes.func.isRequired,
+    forEach: PropTypes.func.isRequired,
   }).isRequired,
   idToEdit: PropTypes.number.isRequired,
 };
